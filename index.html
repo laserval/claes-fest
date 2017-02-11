@@ -6,29 +6,77 @@
 		</style>
 		<!-- Include the volume meter component -->
 		<script src="volume-meter.js"></script>
+		<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
 		<!-- Include the main app logic -->
 		<script src="main.js"></script>
+		<style>
+		    div.center
+		    {
+		        width: 100%;
+		        margin-left: auto;
+		        margin-right: auto;
+		        text-align: center;
+		    }
+	        @keyframes wooble{
+	            0%{
+	                background-position:  center -100%; 
+	            }
+	            40%{
+	                background-position:  center -40%;      
+	            }
+	            100%{
+	                background-position:  center -100%;     
+	            }
+	        }
+	        @keyframes wooble-up{
+	            0%{
+	                background-position:  center -100%; 
+	            }
+	            100%{
+	                background-position:  center 0%;        
+	            }
+	        }
+	        @keyframes wooble-out{
+	            0%{
+	                background-position:  center 0%; 
+	            }
+	            100%{
+	                background-position:  center -100%;        
+	            }
+	        }
+	        body{
+	            animation-name: wooble-out;
+	            animation-duration: 1s;
+	            animation-iteration-count: 1;
+	            background-image: url('claes_v1.png');
+	            background-repeat: no-repeat;
+	            background-size: cover;
+	            background-position: center -100%;  
+	        }
+	        body.claes-is-coming{
+	            animation-name: wooble;
+	            animation-duration: 2s;
+	            animation-iteration-count: infinite;
+	            background-position: center -100%;  
+	        }
+	        body.claes{
+	            animation-name: wooble-up;
+	            animation-duration: 1s;
+	            animation-iteration-count: 1;
+	            background-position:  center 0%;    
+	        }
+	    </style>
 	</head>
 	<body>
-		<p>This sample shows how to implement a clip-indicating volume meter in Web Audio, using a ScriptProcessor.  It's necessary to use a ScriptProcessor in order to not miss any clipping samples - otherwise you could implement this using a RealtimeAnalyser to only grab samples when necessary.</p>
-		<canvas id="meter" width="500" height="50"></canvas>
-
-		<p>Check out the <a href="http://github.com/cwilso/volume-meter/">source on Github</a>.</p>
-		<p>The usage is quite easy:
-		<pre>var meter = createAudioMeter(audioContext,clipLevel,averaging,clipLag);
-
-audioContext: the AudioContext you're using.
-clipLevel: the level (0 to 1) that you would consider "clipping".  Defaults to 0.98.
-averaging: how "smoothed" you would like the meter to be over time.  Should be between 0 and less than 1.  Defaults to 0.95.
-clipLag: how long you would like the "clipping" indicator to show after clipping has occured, in milliseconds.  Defaults to 750ms.
-
-meter.checkClipping();
-
-returns true if the node has clipped in the last clipLag milliseconds.
-
-meter.shutdown();
-
-used to destroy the node (it's important to disconnect and remove the event handler for any ScriptProcessor).
-</pre>
+		<div class="center">
+			<canvas id="meter" width="500" height="5"></canvas>
+			<audio src="glen-1.mp3"></audio>
+			<audio src="glen-2.mp3"></audio>
+			<audio src="glen-3.mp3"></audio>
+			<audio src="glen-4.mp3"></audio>
+		</div>
 	</body>
 </html>

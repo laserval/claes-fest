@@ -46,7 +46,7 @@ function createAudioMeter(audioContext,clipLevel,averaging,clipLag) {
 	processor.volume = 0;
 	processor.clipLevel = clipLevel || 0.98;
 	processor.averaging = averaging || 0.95;
-	processor.clipLag = clipLag || 750;
+	processor.clipLag = clipLag || 1750;
 
 	// this will have no effect, since we don't copy the input to the output,
 	// but works around a current Chrome bug.
@@ -79,7 +79,7 @@ function volumeAudioProcess( event ) {
 	// Do a root-mean-square on the samples: sum up the squares...
     for (var i=0; i<bufLength; i++) {
     	x = buf[i];
-    	if (Math.abs(x)>=this.clipLevel) {
+    	if (Math.abs(x) >= this.clipLevel) {
     		this.clipping = true;
     		this.lastClip = window.performance.now();
     	}

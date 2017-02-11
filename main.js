@@ -29,6 +29,9 @@ var HEIGHT=50;
 var rafID = null;
 
 window.onload = function() {
+    $('audio').on( "ended", function(){
+        playing = false;
+    });
 
     // grab our canvas
 	canvasContext = document.getElementById( "meter" ).getContext("2d");
@@ -72,32 +75,52 @@ function didntGetStream() {
 }
 
 var mediaStreamSource = null;
+var clipLevel = 0.1;
+var clipLag = 1750;
+var averaging = 0.98;
 
 function gotStream(stream) {
+    console.log("got stream");
     // Create an AudioNode from the stream.
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
 
     // Create a new volume meter and connect it.
-    meter = createAudioMeter(audioContext);
+    meter = createAudioMeter(audioContext, clipLevel, averaging, clipLag);
     mediaStreamSource.connect(meter);
 
     // kick off the visual updating
     drawLoop();
 }
 
+var playing = false;
+
 function drawLoop( time ) {
     // clear the background
     canvasContext.clearRect(0,0,WIDTH,HEIGHT);
 
     // check if we're currently clipping
-    if (meter.checkClipping())
-        canvasContext.fillStyle = "red";
-    else
+    if (meter.checkClipping() && !playing) {
+        $('body').removeClass('claes');
         canvasContext.fillStyle = "green";
-
+    } else if (!playing) {
+        $('body').addClass('claes');
+        playing = true;
+        play();
+        canvasContext.fillStyle = "red";
+    }
     // draw a bar based on the current volume
     canvasContext.fillRect(0, 0, meter.volume*WIDTH*1.4, HEIGHT);
 
     // set up the next visual callback
     rafID = window.requestAnimationFrame( drawLoop );
+}
+
+var current = 0;
+function play() {
+    var audios = $('audio');
+    if (current > audios.length - 1) {
+        current = 0;
+    }
+    audios.get()[current].play();
+    current++;
 }
