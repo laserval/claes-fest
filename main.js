@@ -89,7 +89,7 @@ function gotStream(stream) {
     mediaStreamSource.connect(meter);
 
     // kick off the visual updating
-    drawLoop();
+    setTimeout(drawLoop, 1000)
 }
 
 var playing = false;
